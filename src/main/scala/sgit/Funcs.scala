@@ -32,8 +32,8 @@ object Funcs {
   }
 
   val decoder: CharsetDecoder = Codec.UTF8.decoder.onMalformedInput(CodingErrorAction.IGNORE)
-  val pathInit = System.getProperty("user.dir").replaceAll(Pattern.quote("\\"),"/") + "/src/main/scala/sgit/Path.txt"
-  val path = getFileContentStringed(System.getProperty("user.dir").replaceAll(Pattern.quote("\\"),"/") + "/src/main/scala/sgit/Path.txt")
+  val pathInit = System.getProperty("user.dir")
+  val path = System.getProperty("user.dir")
   val pathsgit = path + ".sgit/"
 
 

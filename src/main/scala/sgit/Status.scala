@@ -1,8 +1,14 @@
 package sgit
 
+import java.io.File
+
 import scala.io.Source
 
 object Status {
+
+  val path = System.getProperty("user.dir")
+  val / = File.separator
+  val pathsgit = path + / + ".sgit" + /
 
   /**
    * main for status command
@@ -10,10 +16,10 @@ object Status {
   def status() : Unit = {
     val modifs = getModifiedFiles(getFilesTracked, getCurrentFiles)
     if (modifs.isEmpty)
-      println("All files are in stage")
+      println("Nothing to commit")
     else {
       println("Here are the modified files :")
-      modifs.foreach(m => println(m.substring(Funcs.path.length)))
+      modifs.foreach(m => println(m.substring(path.length)))
     }
   }
 
@@ -24,11 +30,8 @@ object Status {
    * @return
    */
   def getModifiedFiles(x : List[(String, String)], y : List[(String, String)]): List[String] = {
-    val x2 = x.map( s => {
-      (Funcs.antiSlash(s._1), Funcs.antiSlash(s._2))
-    })
     if(x.nonEmpty && y.nonEmpty) {
-      val result = x2.foldLeft(List[String]()){(acc, e) =>
+      val result = x.foldLeft(List[String]()){(acc, e) =>
         if (isFileModified(e, y)) { acc :+  e._1 } else { acc }
       }
       result
@@ -57,7 +60,7 @@ object Status {
    * @return
    */
   def getFilesTracked : List[(String, String)] = {
-    val trackFilePath = Source.fromFile(Funcs.pathsgit + "Index.txt")
+    val trackFilePath = Source.fromFile(pathsgit + "index.txt")
     val filesTracked = trackFilePath.getLines.toList
     trackFilePath.close()
     filesTracked.map(file => {
@@ -70,7 +73,7 @@ object Status {
    * @return
    */
   def getCurrentFiles : List[(String, String)] = {
-    val sourcePath = Funcs.path
+    val sourcePath = path
     val allFiles = Funcs.getAllFiles(sourcePath, List[String]()).filterNot(f => f.contains(".sgit"))
     val allContents = allFiles.map(Funcs.getFileContentStringed)
     val allContentsHashed = Funcs.contentHasher(allContents)

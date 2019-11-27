@@ -2,10 +2,84 @@ package sgit
 
 object Main extends App {
 
+  if(args.length > 0)
+    {
+      if(args(0) == "init")
+        {
+          Init.init() // TODO : check init from directory (sgit called from elsewhere)
+        }
+      else if(args(0) == "add")
+        {
+          if(args.length > 1)
+            {
+              if(args(1) == ".")
+                {
+                  Add.add() // TODO : add all
+                }
+              else
+                {
+                  Add.add() // TODO : add specific file
+                }
+            }
+          else
+          {
+            println("Missing parameter after 'add'")
+          }
+        }
+      else if (args(0) == "status")
+        {
+          Status.status()
+        }
+      else if (args(0) == "commit")
+        {
+          if(args.length > 1 && args(1) == "-m") {
+            if (args.length > 2) {
+              Commit.commit(Option(args(2))) // TODO : add method for specific message description
+            }
+            else {
+              println("No commit message given. Please input a commit message after using '-m'")
+            }
+          }
+          else
+          {
+            Commit.commit() // TODO : commit with default description
+          }
+        }
+      else if (args(0) == "diff")
+        {
+          // TODO : diff method
+        }
+      else if (args(0) == "log")
+        {
+          if(args.length < 2)
+            {
+              Logs.logStat() // TODO : log
+            }
+          else if(args(1) == "-p")
+            {
+              Logs.logP() // TODO : log -p
+            }
+          else
+            {
+              println("Bad input after log. No method recognized")
+            }
+        }
+      else if (args(0) == "help")
+        {
+          println("Help : here are available commands")
+        }
+    }
+  else
+    {
+      println("Missing argumennt : init add commit log")
+    }
+
+/*
   loop
   @scala.annotation.tailrec
   def loop : Unit = {
-    println("\r\nWELCOME TO SGIT !")
+    println("++++" + args(0))
+    println("\r\nWELCOME TO SGIT 2!")
     println("Let us know what you need ! Exit with \"exit\"\r\n")
     val command : String = scala.io.StdIn.readLine()
     command match {
@@ -40,7 +114,7 @@ object Main extends App {
     }
     loop
   }
-
+*/
 
 
 
