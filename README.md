@@ -7,10 +7,12 @@ My project is composed of several files and directories. In order to be able to 
  - sbt (version 1.3.2)
  
 Then, this is the way to use the project :
- - clone the project
- - create a working directory : mkdir myproject
+ - clone the project and go into it
+ - compile it :  sbt compile
+ - make the script executable : chmod +x script.sh
+ - create a working directory elsewhere : mkdir myproject
  - go into this directory : cd myproject
- - use sgit commands via the script from the cloned project (you can use it by getting its full path or by adding this fullpath to your   paths by calling it "sgit"
+ - use sgit commands via the script from the cloned project (you can use it by getting its full path or by adding this fullpath to your   local paths
  - if you call it by script, no need to add sgit before
  
 Example of commands :
