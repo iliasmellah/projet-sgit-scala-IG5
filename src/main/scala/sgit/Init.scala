@@ -21,9 +21,9 @@ object Init {
       Funcs.writeInFile(pathsgit + "committed.txt","false")
       Funcs.writeInFile(pathsgit + "logs.txt","")
       Funcs.writeInFile(pathsgit + "logsp.txt","")
-      println("Working directory is initialized with sgit")
+      println("\nWorking directory is initialized with sgit")
     } else {
-      println("Project already initialized")
+      println("\nProject already initialized")
     }
   }
 

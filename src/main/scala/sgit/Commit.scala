@@ -53,7 +53,7 @@ object Commit {
     Funcs.writeInFile(pathsgit + "committed.txt","true")
 
 
-    println("Staged files committed")
+    println("\nStaged files committed")
   }
 
 

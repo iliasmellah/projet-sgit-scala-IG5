@@ -31,45 +31,45 @@ object logsFulfiller {
         addedLines += x._1
       })
 
-      if (removedLines.isEmpty) {
-        val logspReversed =
-          "\nNot deleted lines\n" +
-          addedLines.reverse.toList.mkString("\n") +
-          "\nAdded lines : \n\n" +
-          "\n *** File : " + fileName + " ***\n\n" +
-          "\nDescription : " + description +
-          "\nDate : " + date +
-          "\nAuthor : " + author +
-          "\nCommit : " + commitSha +"\n"
-        val logspRight = logspReversed.split("\n").toList.reverse.mkString("\n")
-
-        Funcs.writeInFile(pathsgit + "logsp.txt", logspRight + "\n\n------------------------\n\n" + logspContent)
-      } else {
-        val logspReversed = removedLines.reverse.toList.mkString("\n") +
-          "\nDeleted lines : \n\n" +
-          addedLines.reverse.toList.mkString("\n") +
-          "\nAdded lines : \n\n" +
-          "\n *** File : " + fileName + " ***\n\n" +
-          "\nDescription : " + description +
-          "\nDate : " + date +
-          "\nAuthor : " + author +
-          "\nCommit : " + commitSha +"\n"
-        val logspRight = logspReversed.split("\n").toList.reverse.mkString("\n")
-
-        Funcs.writeInFile(pathsgit + "logsp.txt", logspRight + "\n\n------------------------\n\n" + logspContent)
-      }
-    } else {
-      val fileContent = Funcs.getFileContentStringed(pathsgit + "Stage" + / + fileName)
       val logspRight =
-          "\nCommit : " + commitSha +
+        "\nCommit : " + commitSha +
           "\nAuthor : " + author +
           "\nDate : " + date +
           "\nDescription : " + description + "\n" +
-          "\n *** File : " + fileName + " (new file) ***\n\n" +
-          "\nAdded lines : \n" +
-          fileContent + "\n"
+          "\n *** File : " + fileName + " ***\n\n" +
+          "\nAdded lines : \n\n" +
+          addedLines.toList.mkString("\n") +
+          "\n\nNo deleted lines \n\n"
 
-      Funcs.writeInFile(pathsgit + "logsp.txt", logspRight + "\n\n------------------------\n\n" + logspContent)
+        Funcs.writeInFile(pathsgit + "logsp.txt", logspRight + "\n\n------------------------\n\n" + logspContent)
+
+    } else {
+      val fileContent = Funcs.getFileContentStringed(pathsgit + "Stage" + / + fileName)
+      if (fileContent.isEmpty) {
+        val logspRight =
+          "\nCommit : " + commitSha +
+            "\nAuthor : " + author +
+            "\nDate : " + date +
+            "\nDescription : " + description + "\n" +
+            "\n *** File : " + fileName + " (new file created) ***\n\n" +
+            "\nNo added lines\n"
+
+        Funcs.writeInFile(pathsgit + "logsp.txt", logspRight + "\n\n------------------------\n\n" + logspContent)
+      } else {
+        val logspRight =
+          "\nCommit : " + commitSha +
+            "\nAuthor : " + author +
+            "\nDate : " + date +
+            "\nDescription : " + description + "\n" +
+            "\n *** File : " + fileName + " (new file created) ***\n\n" +
+            "\nAdded lines : \n" +
+            fileContent + "\n"
+
+        Funcs.writeInFile(pathsgit + "logsp.txt", logspRight + "\n\n------------------------\n\n" + logspContent)
+      }
+
+
+
     }
   }
 

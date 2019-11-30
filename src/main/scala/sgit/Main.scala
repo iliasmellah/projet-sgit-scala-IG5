@@ -6,7 +6,7 @@ object Main extends App {
     {
       if(args(0) == "test")
       {
-        Diff.diff()
+        logsFulfiller.fulfillLogsp("commit", "author", "date", "decription")
       }
       else if(args(0) == "init")
         {

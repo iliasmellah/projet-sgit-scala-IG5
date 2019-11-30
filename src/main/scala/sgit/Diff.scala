@@ -41,13 +41,7 @@ object Diff {
           println("Added lines :")
           println(addedLines.toList.mkString("\n + "))
         }
-
-        if (removedLines.isEmpty) {
-          println("\nNo removed lines")
-        } else {
-          println("\nDeleted lines :")
-          println(removedLines.toList.mkString("\n - "))
-        }
+        println("\nNo deleted lines")
       }
     } else {
       val fileName = filesWD(0).substring(path.length + 1)

@@ -17,7 +17,7 @@ object Add {
     val allFiles = Funcs.getAllFiles(sourcePath, List[String]()).filterNot(f => f.contains(".sgit"))
     addFilesToTracked(allFiles)
     copyDataToStage()
-    println("All files added to stage")
+    println("\nFile added to stage")
   }
 
   /**
