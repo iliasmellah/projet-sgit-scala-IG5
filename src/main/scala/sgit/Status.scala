@@ -15,11 +15,16 @@ object Status {
    */
   def status() : Unit = {
     val modifs = getModifiedFiles(getFilesTracked, getCurrentFiles)
+    val committed = Funcs.getFileContentStringed(pathsgit + "committed.txt")
     if (modifs.isEmpty)
-      println("Nothing to commit")
+      if (committed == "false") {
+        println("All files are in stage, you can commit")
+      } else {
+        println("Nothing to commit")
+      }
     else {
       println("Here are the modified files :")
-      modifs.foreach(m => println(m.substring(path.length)))
+      modifs.foreach(m => println(m.substring(path.length+1)))
     }
   }
 

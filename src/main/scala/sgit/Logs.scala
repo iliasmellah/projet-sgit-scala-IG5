@@ -4,6 +4,18 @@ import java.io.File
 
 object Logs {
 
+  val path = System.getProperty("user.dir")
+  val / = File.separator
+  val pathsgit = path + / + ".sgit" + /
+
+  def printLogsp() = {
+    println("\n" + Funcs.getFileContentStringed(pathsgit + "logsp.txt"))
+  }
+
+  def printLogs() = {
+    println("\n" + Funcs.getFileContentStringed(pathsgit + "logs.txt"))
+  }
+
   /**
    * get needed files to shows logs
    * option : "info" or "addedFiles" or "removedFiles" --> gets data from each one of these files for all commits
@@ -11,8 +23,8 @@ object Logs {
    * @return
    */
   def getLogNeededFiles(option : String) : List[String] = {
-    val listDir = new File(Funcs.pathsgit + "Commits/").listFiles.filter(_.isDirectory).toList
-    listDir.map( d => d + "\\" + option + ".txt")
+    val listDir = new File(pathsgit + "Commits" + /).listFiles.filter(_.isDirectory).toList
+    listDir.map( d => d + / + option + ".txt")
   }
 
   /**
@@ -34,7 +46,7 @@ object Logs {
     val listInfos = getLogFilesContent(infos)
     listInfos.foreach(l => {
       println("\r\n"
-        + "Commt ID : " + l(0) + "\r\n"
+        + "Commit ID : " + l(0) + "\r\n"
         + "Author : " + l(1) + "\r\n"
         + "Date : " + l(2) + "\r\n"
         + "Description : " + l(3) + "\r\n"

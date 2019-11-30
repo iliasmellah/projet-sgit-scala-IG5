@@ -13,6 +13,7 @@ object Add {
    */
   def add(): Unit = {
     val sourcePath = path
+    Funcs.writeInFile(pathsgit + "committed.txt","false")
     val allFiles = Funcs.getAllFiles(sourcePath, List[String]()).filterNot(f => f.contains(".sgit"))
     addFilesToTracked(allFiles)
     copyDataToStage()

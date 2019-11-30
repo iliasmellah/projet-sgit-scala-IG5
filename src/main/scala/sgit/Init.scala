@@ -18,7 +18,10 @@ object Init {
       Funcs.createDir(pathsgit + "LocalRepo")
       Funcs.createDir(pathsgit + "Stage")
       Funcs.writeInFile(pathsgit + "index.txt","")
-      println("Working directory is initialized with sgit\r\n")
+      Funcs.writeInFile(pathsgit + "committed.txt","false")
+      Funcs.writeInFile(pathsgit + "logs.txt","")
+      Funcs.writeInFile(pathsgit + "logsp.txt","")
+      println("Working directory is initialized with sgit")
     } else {
       println("Project already initialized")
     }

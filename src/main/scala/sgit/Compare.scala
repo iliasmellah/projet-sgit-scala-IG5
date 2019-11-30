@@ -1,6 +1,12 @@
 package sgit
 
+import java.io.File
+
 object Compare {
+
+  val path = System.getProperty("user.dir")
+  val / = File.separator
+  val pathsgit = path + / + ".sgit" + /
 
   /**
    * gets differences between 2 files
@@ -80,8 +86,8 @@ object Compare {
    */
   def getModificationsOneFile(fileName : String) : (String, List[(String, Int)], List[(String, Int)]) = {
     val add, rem = List()
-    val a = Funcs.getFileContentStringed(Funcs.pathsgit + "LocalRepo/" + fileName).split("\r\n").toList.zipWithIndex
-    val b = Funcs.getFileContentStringed(Funcs.pathsgit + "Stage/" + fileName).split("\r\n").toList.zipWithIndex
+    val a = Funcs.getFileContentStringed(Funcs.pathsgit + "LocalRepo" + / + fileName).split("\r\n").toList.zipWithIndex
+    val b = Funcs.getFileContentStringed(Funcs.pathsgit + "Stage" + / + fileName).split("\r\n").toList.zipWithIndex
     val diff = Compare.diff(a,b,add,rem)
     val removed = diff._1
     val added = diff._2

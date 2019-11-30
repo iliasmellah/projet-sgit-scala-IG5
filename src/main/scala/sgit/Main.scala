@@ -4,7 +4,11 @@ object Main extends App {
 
   if(args.length > 0)
     {
-      if(args(0) == "init")
+      if(args(0) == "test")
+      {
+        logsFulfiller.fulfillLogs("numero de commit", "Arnaud Castelltort", "date du jour", "description exacte") // TODO : check init from directory (sgit called from elsewhere)
+      }
+      else if(args(0) == "init")
         {
           Init.init() // TODO : check init from directory (sgit called from elsewhere)
         }
@@ -14,11 +18,11 @@ object Main extends App {
             {
               if(args(1) == ".")
                 {
-                  Add.add() // TODO : add all
+                  Add.add()
                 }
               else
                 {
-                  Add.add() // TODO : add specific file
+                  Add.add() // TODO : add specific file instead of adding all
                 }
             }
           else
@@ -34,7 +38,7 @@ object Main extends App {
         {
           if(args.length > 1 && args(1) == "-m") {
             if (args.length > 2) {
-              Commit.commit(Option(args(2))) // TODO : add method for specific message description
+              Commit.commit(Option(args(2)))
             }
             else {
               println("No commit message given. Please input a commit message after using '-m'")
@@ -42,7 +46,7 @@ object Main extends App {
           }
           else
           {
-            Commit.commit() // TODO : commit with default description
+            Commit.commit()
           }
         }
       else if (args(0) == "diff")
@@ -53,11 +57,11 @@ object Main extends App {
         {
           if(args.length < 2)
             {
-              Logs.logStat() // TODO : log
+              Logs.printLogs() // TODO : log
             }
           else if(args(1) == "-p")
             {
-              Logs.logP() // TODO : log -p
+              Logs.printLogsp() // TODO : log -p
             }
           else
             {
@@ -66,12 +70,12 @@ object Main extends App {
         }
       else if (args(0) == "help")
         {
-          println("Help : here are available commands")
+          println("Here are available commands : init, add, commit, status, log")
         }
     }
   else
     {
-      println("Missing argumennt : init add commit log")
+      println("Missing argument : init add commit log")
     }
 
 /*

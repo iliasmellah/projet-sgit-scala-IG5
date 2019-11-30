@@ -9,6 +9,55 @@ object Commit {
   val pathsgit = path + / + ".sgit" + /
 
   /**
+   * main for commit command
+   */
+  def commit(commitMessage: Option[String] = None) : Unit = {
+
+    val date = Funcs.getCurrentTime
+    // for the 1st commit : sha1(sha1(sha1("initial commit"))) to insure that no other commit will have the same name
+    // so lastCommit : "1078facc00319debd5fe09847c69f7439f4ed4d3" for 1st commit
+    val parentCommit = Funcs.getFileContentStringed(pathsgit + "Commits/lastCommit.txt")
+    val commitSha = Funcs.stringHasher(date + parentCommit)
+
+    // creates the commit directory and initiates it
+    Commit.createCommitDir(commitSha)
+
+    // gets files removed and added between Local Repo and Stage directories
+    val diffFiles = diffFilesLocalData()
+    Commit.fulfillRemovedAddedFiles(commitSha, diffFiles)
+
+    // gets all non added files from stage (files that may have been modified from last commit)
+    /*val allNonAddedStageFiles = Funcs.getAllFiles(pathsgit + "Stage", List()).map(_.substring((pathsgit + "Stage/").length)).filterNot(f => diffFiles._2.contains(f))
+
+    allNonAddedStageFiles.foreach( f => {
+      fullfillOneModifiedFile(commitSha, Compare.getModificationsOneFile(f))
+    })*/
+
+    // creates the info file of the commit
+    val nbRemovedFiles = diffFilesLocalData()._1.length
+    val nbAddedFiles = diffFilesLocalData()._2.length
+    val nbAddedLines = Commit.getLinesNumberFiles(Commit.getAllLinesFromModifiedFiles(commitSha.substring(0,5), "addedLines"), 0)
+    val nbRemovedLines = Commit.getLinesNumberFiles(Commit.getAllLinesFromModifiedFiles(commitSha.substring(0,5), "removedLines"), 0)
+
+    val info = List(commitSha, date, commitMessage.getOrElse("No commit message"), parentCommit, nbAddedLines, nbRemovedLines, nbRemovedFiles, nbAddedFiles)
+    createInfoCommitFile(commitSha, info)
+
+    logsFulfiller.fulfillLogsp(commitSha, "Arnaud Castelltort", date, commitMessage.getOrElse("No commit message"))
+    logsFulfiller.fulfillLogs(commitSha, "Arnaud Castelltort", date, commitMessage.getOrElse("No commit message"))
+
+    val a = pathsgit + "Stage" + /
+    val b = pathsgit + "LocalRepo" + /
+    Funcs.deleteRemovedFiles(a,b,10)
+    copyAllDirForCommit(a,b)
+
+    Funcs.writeInFile(pathsgit + "committed.txt","true")
+
+
+    println("Staged files committed")
+  }
+
+
+  /**
    * creates the commit file with its commit sha key substringed and fulfills it
    * @param commitSha
    */
@@ -48,13 +97,13 @@ object Commit {
   }
 
   /**
-   * get difference between files in localrepo (already commited) and files in stage
+   * get difference between files in localrepo (already committed) and files in stage
    */
   def diffFilesLocalData() : (List[String], List[String]) = {
     // substring is needed to access directly to wanted dir
     // toSet.toList because unresolved duplicates in the list
-    val filesLR = Funcs.getAllFiles(pathsgit + "LocalRepo/", List()).map(_.substring(pathsgit.length + 10 )).toSet.toList
-    val filesD = Funcs.getAllFiles(pathsgit + "Stage/", List()).map(_.substring(pathsgit.length + 6 )).toSet.toList
+    val filesLR = Funcs.getAllFiles(pathsgit + "LocalRepo"+ /, List()).map(_.substring(pathsgit.length + 10 )).toSet.toList
+    val filesD = Funcs.getAllFiles(pathsgit + "Stage" + /, List()).map(_.substring(pathsgit.length + 6 )).toSet.toList
     Compare.diff2(filesLR, filesD, List(), List())
   }
 
@@ -116,47 +165,6 @@ object Commit {
   def getAllLinesFromModifiedFiles(commitSha : String, option : String) : List[String] = {
     val listDir = new File(pathsgit + "Commits/" + commitSha.substring(0,5) + "/modifiedFiles").listFiles.toList
     listDir.map( d => d + "\\" + option + ".txt")
-  }
-
-  /**
-   * main for commit command
-   */
-  def commit(commitMessage: Option[String] = None) : Unit = {
-
-    val date = Funcs.getCurrentTime
-    // for the 1st commit : sha1(sha1(sha1("initial commit"))) to insure that no other commit will have the same name
-    // so lastCommit : "1078facc00319debd5fe09847c69f7439f4ed4d3" for 1st commit
-    val parentCommit = Funcs.getFileContentStringed(pathsgit + "Commits/lastCommit.txt")
-    val commitSha = Funcs.stringHasher(date + parentCommit)
-
-    // creates the commit directory and initiates it
-    Commit.createCommitDir(commitSha)
-
-    // gets files removed and added between Local Repo and Stage directories
-    val diffFiles = diffFilesLocalData()
-    Commit.fulfillRemovedAddedFiles(commitSha, diffFiles)
-
-    // gets all non added files from stage (files that may have been modified from last commit)
-    val allNonAddedStageFiles = Funcs.getAllFiles(pathsgit + "Stage", List()).map(_.substring((pathsgit + "Stage/").length)).filterNot(f => diffFiles._2.contains(f))
-
-    allNonAddedStageFiles.foreach( f => {
-      fullfillOneModifiedFile(commitSha, Compare.getModificationsOneFile(f))
-    })
-
-    // creates the info file of the commit
-    val nbRemovedFiles = diffFilesLocalData()._1.length
-    val nbAddedFiles = diffFilesLocalData()._2.length
-    val nbAddedLines = Commit.getLinesNumberFiles(Commit.getAllLinesFromModifiedFiles(commitSha.substring(0,5), "addedLines"), 0)
-    val nbRemovedLines = Commit.getLinesNumberFiles(Commit.getAllLinesFromModifiedFiles(commitSha.substring(0,5), "removedLines"), 0)
-
-    val info = List(commitSha, date, commitMessage.getOrElse("No commit message"), parentCommit, nbAddedLines, nbRemovedLines, nbRemovedFiles, nbAddedFiles)
-    createInfoCommitFile(commitSha, info)
-
-    val a = pathsgit + "Stage/"
-    val b = pathsgit + "LocalRepo/"
-    Funcs.deleteRemovedFiles(a,b,10)
-    copyAllDirForCommit(a,b)
-
   }
 
   // unexplained error when i tried to reuse Funcs.copyAllDir
