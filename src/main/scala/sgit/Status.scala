@@ -16,6 +16,7 @@ object Status {
   def status() : Unit = {
     val modifs = getModifiedFiles(getFilesTracked, getCurrentFiles)
     val committed = Funcs.getFileContentStringed(pathsgit + "committed.txt")
+    println("On branch master")
     if (modifs.isEmpty)
       if (committed == "false") {
         println("All files are in stage, you can commit")

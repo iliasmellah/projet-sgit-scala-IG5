@@ -84,13 +84,6 @@ object logsFulfiller {
     Funcs.writeInFile(pathsgit + "logs.txt", contentToAdd + "\n\n------------------------------\n" + logsContent)
   }
 
-  // DIFF
-  /*val filesLR = Funcs.getAllFiles(pathsgit + "LocalRepo" + /, List())
-  println(filesLR)
-  val filesWDSgit = Funcs.getAllFiles(path + /, List())
-  val filesWD = filesWDSgit.filterNot(_.contains(".sgit"))
-  println(filesWD)*/
-
   def getModificationsOneFile(fileName : String) : (String, List[(String, Int)], List[(String, Int)]) = {
     val add, rem = List()
     val a = Funcs.getFileContentStringed(pathsgit + "LocalRepo" + / + fileName).split("\r\n").toList.zipWithIndex

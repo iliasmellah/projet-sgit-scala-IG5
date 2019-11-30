@@ -6,7 +6,7 @@ object Main extends App {
     {
       if(args(0) == "test")
       {
-        logsFulfiller.fulfillLogs("numero de commit", "Arnaud Castelltort", "date du jour", "description exacte") // TODO : check init from directory (sgit called from elsewhere)
+        Diff.diff()
       }
       else if(args(0) == "init")
         {
@@ -51,7 +51,7 @@ object Main extends App {
         }
       else if (args(0) == "diff")
         {
-          // TODO : diff method
+          Diff.diff() // TODO : diff method
         }
       else if (args(0) == "log")
         {
